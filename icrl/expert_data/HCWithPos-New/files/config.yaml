@@ -1,0 +1,181 @@
+wandb_version: 1
+
+_wandb:
+  desc: null
+  value:
+    cli_version: 0.10.12
+    framework: torch
+    is_jupyter_run: false
+    is_kaggle_kernel: false
+    python_version: 3.8.3
+batch_size:
+  desc: null
+  value: 64
+budget:
+  desc: null
+  value: 0.0
+clip_range:
+  desc: null
+  value: 0.2
+clip_range_cost_vf:
+  desc: null
+  value: null
+clip_range_reward_vf:
+  desc: null
+  value: null
+cn_acs_select_dim:
+  desc: null
+  value: null
+cn_device:
+  desc: null
+  value: null
+cn_obs_select_dim:
+  desc: null
+  value: null
+cn_path:
+  desc: null
+  value: null
+cnn_features_dim:
+  desc: null
+  value: 512
+config_file:
+  desc: null
+  value: null
+cost_gae_lambda:
+  desc: null
+  value: 0.95
+cost_gamma:
+  desc: null
+  value: 0.99
+cost_info_str:
+  desc: null
+  value: cost
+cost_vf_coef:
+  desc: null
+  value: 0.5
+cost_vf_layers:
+  desc: null
+  value:
+  - 64
+  - 64
+device:
+  desc: null
+  value: cpu
+dont_normalize:
+  desc: null
+  value: false
+ent_coef:
+  desc: null
+  value: 0.0
+eval_env_id:
+  desc: null
+  value: HCWithPosTest-v0
+eval_every:
+  desc: null
+  value: 2048
+file_to_run:
+  desc: null
+  value: cpg
+group:
+  desc: null
+  value: HCWithPos
+learning_rate:
+  desc: null
+  value: 0.0003
+max_grad_norm:
+  desc: null
+  value: 0.5
+n_epochs:
+  desc: null
+  value: 10
+n_steps:
+  desc: null
+  value: 2048
+name:
+  desc: null
+  value: HCWithPos-v0_tk_0.01_s_27_sid_0
+normalize_cost:
+  desc: null
+  value: false
+num_threads:
+  desc: null
+  value: 5
+penalty_initial_value:
+  desc: null
+  value: 1
+penalty_learning_rate:
+  desc: null
+  value: 0.1
+plot_every:
+  desc: null
+  value: 2048
+policy_layers:
+  desc: null
+  value:
+  - 64
+  - 64
+policy_name:
+  desc: null
+  value: TwoCriticsMlpPolicy
+project:
+  desc: null
+  value: ExpertData
+reward_gae_lambda:
+  desc: null
+  value: 0.95
+reward_gamma:
+  desc: null
+  value: 0.99
+reward_vf_coef:
+  desc: null
+  value: 0.5
+reward_vf_layers:
+  desc: null
+  value:
+  - 64
+  - 64
+save_dir:
+  desc: null
+  value: ./icrl/wandb/run-20201217_092415-173sfsh3/files
+save_every:
+  desc: null
+  value: 2048
+sde_sample_freq:
+  desc: null
+  value: -1
+seed:
+  desc: null
+  value: 27
+shared_layers:
+  desc: null
+  value: null
+sync_wandb:
+  desc: null
+  value: false
+target_kl:
+  desc: null
+  value: 0.01
+timesteps:
+  desc: null
+  value: 5000000
+train_env_id:
+  desc: null
+  value: HCWithPos-v0
+update_penalty_after:
+  desc: null
+  value: 1
+use_null_cost:
+  desc: null
+  value: false
+use_pid:
+  desc: null
+  value: false
+use_sde:
+  desc: null
+  value: false
+verbose:
+  desc: null
+  value: 2
+wandb_sweep:
+  desc: null
+  value: false
