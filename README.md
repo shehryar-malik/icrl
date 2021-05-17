@@ -1,3 +1,5 @@
+**Status:** Archive (code is provided as-is, no updates expected)
+
 ## Code Dependency
 
 It is recommended to use Python 3.8 to run this code within a virtual environment. Within the virtual environment, run the following commands to download the essential python packages for this codebase. You will also need to setup [mujoco](https://github.com/openai/mujoco-py).
