@@ -1,6 +1,6 @@
 **Status:** Archive (code is provided as-is, no updates expected)
 
-This repository contains the code for the paper Inverse Constrained Reinforcement Learning (ICML 2021) [link](https://arxiv.org/abs/2011.09999).
+This repository contains the code for the paper Inverse Constrained Reinforcement Learning (ICML 2021) [[link]](https://arxiv.org/abs/2011.09999). This codebase is built on top of the [stablebaselines3](https://github.com/DLR-RM/stable-baselines3) repository.
 
 ## Code Dependency
 
@@ -86,6 +86,7 @@ python run_me.py gail -p ICRL-FE2 --group AntBroken-CT-GLC --freeze_gail_weights
 
 
 If you find this paper useful, please cite it as:
+```
 @article{icrl,
       title={Inverse Constrained Reinforcement Learning},
       author={Shehryar Malik and Usman Anwar and Alireza Aghasi and Ali Ahmed},
@@ -93,3 +94,4 @@ If you find this paper useful, please cite it as:
       year={2021},
       url={https://arxiv.org/abs/2011.09999}
 }
+```
