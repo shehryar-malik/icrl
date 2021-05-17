@@ -1,5 +1,7 @@
 **Status:** Archive (code is provided as-is, no updates expected)
 
+This repository contains the code for the paper Inverse Constrained Reinforcement Learning (ICML 2021) [link](https://arxiv.org/abs/2011.09999).
+
 ## Code Dependency
 
 It is recommended to use Python 3.8 to run this code within a virtual environment. Within the virtual environment, run the following commands to download the essential python packages for this codebase. You will also need to setup [mujoco](https://github.com/openai/mujoco-py).
@@ -81,3 +83,13 @@ python run_me.py cpg -p ICRL-FE2 --group AntBroken-CT-GLag --load_gail --cn_path
 # GAIL-Constraint
 python run_me.py gail -p ICRL-FE2 --group AntBroken-CT-GLC --freeze_gail_weights --gail_path ./icrl/expert_data/ConstraintTransfer/GAIL/AntBroken/files/gail_discriminator.pt -ep icrl/expert_data/AntWall -er 2 -tei AntWallBroken-v0 -eei AntWallBrokenTest-v0 -tk 0.01 --batch_size 128 --reward_gae_lambda 0.9 --n_epochs 20 --learning_rate 3e-5 --clip_range 0.4 -t 2e6
 ```
+
+
+If you find this paper useful, please cite it as:
+@article{icrl,
+      title={Inverse Constrained Reinforcement Learning},
+      author={Shehryar Malik and Usman Anwar and Alireza Aghasi and Ali Ahmed},
+      note={\textit{To Be Presented at ICML 2021}.},
+      year={2021},
+      url={https://arxiv.org/abs/2011.09999}
+}
