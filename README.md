@@ -56,7 +56,7 @@ python run_me.py icrl -p ICRL-FE2 --group AntWall-GLag --train_gail_lambda -nis 
 python run_me.py gail -p ICRL-FE2 --group AntWall-GLC -ep icrl/expert_data/AntWall -er 45 -dl 40 40 -dlr 0.005 -t 4e6 -tei AntWall-v0 -eei AntWallTest-v0 --batch_size 128 --reward_gae_lambda 0.9 --n_epochs 20 --learning_rate 3e-5 --clip_range 0.4 -lc
 ```
 
-## Running Constraint Learning Experiments (Section 4.2)
+## Running Constraint Transfer Experiments (Section 4.2)
 
 ### Ant Wall To Point Circle
 
