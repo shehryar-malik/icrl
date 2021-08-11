@@ -87,11 +87,18 @@ python run_me.py gail -p ICRL-FE2 --group AntBroken-CT-GLC --freeze_gail_weights
 
 If you find this paper useful, please cite it as:
 ```
-@article{icrl,
-      title={Inverse Constrained Reinforcement Learning},
-      author={Shehryar Malik and Usman Anwar and Alireza Aghasi and Ali Ahmed},
-      note={\textit{To Be Presented at ICML 2021}.},
-      year={2021},
-      url={https://arxiv.org/abs/2011.09999}
-}
+@inproceedings{pmlr-v139-malik21a,
+  title = 	 {Inverse Constrained Reinforcement Learning},
+  author =   {Shehryar Malik and Usman Anwar and Alireza Aghasi and Ali Ahmed},
+  booktitle ={Proceedings of the 38th International Conference on Machine Learning},
+  pages = 	 {7390--7399},
+  year = 	 {2021},
+  editor = 	 {Meila, Marina and Zhang, Tong},
+  volume = 	 {139},
+  series = 	 {Proceedings of Machine Learning Research},
+  month = 	 {18--24 Jul},
+  publisher ={PMLR},
+  pdf = 	 {http://proceedings.mlr.press/v139/malik21a/malik21a.pdf},
+  url = 	 {http://proceedings.mlr.press/v139/malik21a.html},
+  }
 ```
