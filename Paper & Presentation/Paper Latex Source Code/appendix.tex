@@ -1,0 +1,205 @@
+This appendix should be read as a continuation of the main paper.
+\subsection{Gradient of log likelihood}
+\label{a:gll}
+The gradient of (\ref{eq:ll}) is
+\begin{equation}
+    \begin{split}
+        \nabla_\theta\mathcal{L}(\theta) &= \frac{1}{N}\sum_{i=1}^M\left[0 + \nabla_\theta \log \zeta_\theta(\tau^{(i)})\right] - \frac{1}{\int\exp(\beta r(\tau))\zeta_\theta(\tau)d\tau}\int\exp(\beta r(\tau))\nabla_\theta \zeta_\theta(\tau)d\tau\\
+        &= \frac{1}{N}\sum_{i=1}^N\nabla_\theta \log \zeta_\theta(\tau^{(i)}) - \int\frac{\exp(\beta r(\tau))\zeta_\theta(\tau)}{\int\exp(\beta r(\tau'))\zeta_\theta(\tau')d\tau'}\nabla_\theta \log \zeta_\theta(\tau)d\tau\\
+        &= \frac{1}{N}\sum_{i=1}^N\nabla_\theta \log \zeta_\theta(\tau^{(i)}) - \int p_{\mathcal{M}^{\bar{\zeta}_\theta}}(\tau)\nabla_\theta \log \zeta_\theta(\tau)d\tau\\
+        &= \frac{1}{N}\sum_{i=1}^N\nabla_\theta \log \zeta_\theta(\tau^{(i)}) - \mathbb{E}_{\tau \sim \pi_{\mathcal{M}^{\zeta_\theta}}}\left[\nabla_\theta \log \zeta_\theta(\tau)\right],
+    \end{split}
+\end{equation}
+where the second line follows from the identity $\nabla_\theta \zeta_\theta(\tau) \equiv \zeta_\theta(\tau) \nabla_\theta \log \zeta_\theta(\tau)$ and the fourth line from the MaxEnt assumption.
+
+\subsection{Derivation of importance sampling weights}
+\label{a:is}
+Suppose that at some iteration of our training procedure we are interested in approximating the gradient of the log of the partition function $\nabla_\theta \log Z_\theta$ (where $\theta$ are the current parameters of our classifier) using an older policy $\pi_{\zeta_{\bar{\theta}}}$ (where $\bar{\theta}$ were the parameters of the classifier which induced the constraint set that this policy respects). We can do so by noting that
+\begin{equation}
+\begin{split}
+    Z_\theta
+	&= \int\exp(r(\tau)) \zeta_\theta(\tau)d\tau\\
+	&= \int \pi_{\zeta_{\bar{\theta}}}(\tau) \left[\frac{\exp(r(\tau)) \zeta_\theta(\tau)}{\pi_{\zeta_{\bar{\theta}}}(\tau)}\right]d\tau\\
+	&= \mathbb{E}_{\tau \sim \pi_{\zeta_{\bar{\theta}}}} \left[\frac{\exp(r(\tau)) \zeta_\theta(\tau)}{\pi_{\zeta_{\bar{\theta}}}(\tau)}\right]\\
+	&= Z_{\bar{\theta}}\cdot\mathbb{E}_{\tau \sim \pi_{\zeta_{\bar{\theta}}}} \left[\frac{\zeta_\theta(\tau)}{\zeta_{\bar{\theta}}(\tau)}\right].\\
+\end{split}
+\label{eq:z_theta}
+\end{equation}
+
+where the fourth lines follows from our MaxEnt assumption, i.e., $\pi_{\zeta_{\bar{\theta}}}(\tau) = \exp(r(\tau))\zeta_{\bar{\theta}}(\tau)/Z_{\bar{\theta}}.$
+
+Therefore
+\begin{equation}
+\begin{split}
+	\nabla_\theta \log Z_\theta
+	&= \frac{1}{Z_\theta} \nabla_\theta Z_\theta\\
+	&= \frac{1}{Z_{\bar{\theta}}\cdot\mathbb{E}_{\tau \sim \pi_{\zeta_{\bar{\theta}}}} \left[\frac{\zeta_\theta(\tau)}{\zeta_{\bar{\theta}}(\tau)}\right]}\left[Z_{\bar{\theta}}\cdot\mathbb{E}_{\tau \sim \pi_{\zeta_{\bar{\theta}}}}\left[\frac{\nabla_\theta\zeta_\theta(\tau)}{\zeta_{\bar{\theta}}(\tau)}\right]\right]\\
+	&= \frac{1}{\mathbb{E}_{\tau \sim \pi_{\zeta_{\bar{\theta}}}} \left[\frac{\zeta_\theta(\tau)}{\zeta_{\bar{\theta}}(\tau)}\right]}\left[\mathbb{E}_{\tau \sim \pi_{\zeta_{\bar{\theta}}}}\left[ \frac{\zeta_\theta(\tau)}{\zeta_{\bar{\theta}}(\tau)}\nabla_\theta \log \zeta_\theta(\tau)\right]\right].
+\end{split}
+\end{equation}
+Note that $\mathbb{E}_{\tau \sim \pi_{\zeta_{\bar{\theta}}}}\left[\frac{\zeta_\theta(\tau)}{\zeta_{\bar{\theta}}(\tau)}\right] = \int \pi_{\zeta_\theta}(\tau) d\tau =1$. So
+\begin{equation}
+\begin{split}
+    \nabla_\theta \log Z_\theta &= 
+    \mathbb{E}_{\pi_{\zeta_{\bar{\theta}}}}\left[\frac{\zeta_\theta(\tau)}{\zeta_{\bar{\theta}}(\tau)}\nabla_\theta \log \zeta_\theta(\tau)\right]\\
+    &= \mathbb{E}_{\pi_{\zeta_{\bar{\theta}}}} \left[\prod_{t=1}^T\frac{\zeta_\theta(s_t,a_t)}{\zeta_{\bar{\theta}}(s_t,a_t)	}\nabla_\theta \log \prod_{t'=1}^T\zeta_\theta(s_{t'},a_{t'})\right]\\
+    &= \mathbb{E}_{\pi_{\zeta_{\bar{\theta}}}} \left[\prod_{t=1}^T\frac{\zeta_\theta(s_t,a_t)}{\zeta_{\bar{\theta}}(s_t,a_t)	}\sum_{t'=1}^T\nabla_\theta \log \zeta_\theta(s_{t'},a_{t'})\right]\\
+    &= \sum_{t'=1}^T\mathbb{E}_{\pi_{\zeta_{\bar{\theta}}}}\left[\prod_{t=1}^T\frac{\zeta_\theta(s_t,a_t)}{\zeta_{\bar{\theta}}(s_t,a_t)	}\nabla_\theta \log \zeta_\theta(s_{t'},a_{t'})\right]\\
+    &= \sum_{t'=1}^T\mathbb{E}_{\pi_{\zeta_{\bar{\theta}}}}\left[\left(\prod_{\substack{t=1\\t\neq t'}}^{T}\frac{\zeta_\theta(s_t,a_t)}{\zeta_{\bar{\theta}}(s_t,a_t)}\right)\left(\frac{\zeta_\theta(s_{t'},a_{t'})}{\zeta_{\bar{\theta}}(s_{t'},a_{t'})}\nabla_\theta \log \zeta_\theta(s_{t'},a_{t'})\right)\right]\\
+    &= \sum_{t'=1}^T\mathbb{E}_{\tau/(s_{t'},a_{t'})\sim\pi_{\zeta_{\bar{\theta}}}}\left[\prod_{\substack{t=1\\t\neq t'}}^{T}\frac{\zeta_\theta(s_t,a_t)}{\zeta_{\bar{\theta}}(s_t,a_t)}\right]\mathbb{E}_{s_{t'},a_{t'}\sim\pi_{\zeta_{\bar{\theta}}}}\left[\frac{\zeta_\theta(s_{t'},a_{t'})}{\zeta_{\bar{\theta}}(s_{t'},a_{t'})}\nabla_\theta \log \zeta_\theta(s_{t'},a_{t'})\right]\\
+    &= \sum_{t'=1}^T \frac{Z_\theta}{Z_{\bar\theta}}\cdot \mathbb{E}_{\pi_{\zeta_{\bar{\theta}}}}\left[\frac{\zeta_\theta(s_{t'},a_{t'})}{\zeta_{\bar{\theta}}(s_{t'},a_{t'})}\nabla_\theta \log \zeta_\theta(s_{t'},a_{t'})\right].\\
+    &\approx \sum_{t'=1}^T  \mathbb{E}_{\pi_{\zeta_{\bar{\theta}}}}\left[\frac{\zeta_\theta(s_{t'},a_{t'})}{\zeta_{\bar{\theta}}(s_{t'},a_{t'})}\nabla_\theta \log \zeta_\theta(s_{t'},a_{t'})\right],\\
+\end{split}
+\end{equation}
+where the last step assumes that $Z_\theta \approx Z_{\bar\theta}$. This is justified since we restrict the extent to which $\zeta_\theta$ can change via the early stopping technique.
+
+\subsection{Forward and reverse KL divergences between two policies}
+\label{a:kl_is}
+Consider two policies $\pi_{\bar\theta}$ and $\pi_{\theta}$. Using our MaxEnt assumption, we can write the forward KL divergence as
+\begin{equation}
+\begin{split}
+    D_{KL}(\pi_{\bar\theta}\vert\vert\pi_\theta)
+    &= \mathbb{E}_{\tau\sim\pi_{\bar\theta}} \left[ \log\frac{\pi_{\bar{\theta}}(\tau)}{\pi_\theta(\tau)}\right]\\
+    &= \mathbb{E}_{\tau\sim\pi_{\bar\theta}} \left[ \log\frac{\zeta_{\bar{\theta}}(\tau)}{\zeta_\theta(\tau)}\right]+\log\frac{Z_\theta}{Z_{\bar{\theta}}}.
+\end{split}
+\end{equation}
+Let $\omega(\tau)$ denote $\zeta_{\bar{\theta}}(\tau)/\zeta_\theta(\tau)$. Plugging in the expression for $Z_\theta$ from (\ref{eq:z_theta}) and using Jensen's inequality gives
+\begin{equation}
+\begin{split}
+    D_{KL}(\pi_{\bar\theta}\vert\vert\pi_\theta)
+    &= \mathbb{E}_{\tau\sim\pi_{\bar\theta}} \left[ \log\omega(\tau)\right] + \log \mathbb{E}_{\tau\sim\pi_{\bar\theta}}\left[\omega(\tau)\right]\\
+    &\leq 2\log \mathbb{E}_{\tau\sim\pi_{\bar\theta}}\left[\omega(\tau)\right].
+\end{split}
+\end{equation}
+Similarly, the reverse KL divergence is
+\begin{equation}
+\begin{split}
+    D_{KL}(\pi_{\theta}\vert\vert\pi_{\bar\theta})
+    &= \mathbb{E}_{\tau\sim\pi_{\theta}} \left[ \log\frac{\pi_{\theta}(\tau)}{\pi_{\bar\theta}(\tau)}\right]\\
+    &= \mathbb{E}_{\tau\sim\pi_{\bar\theta}} \left[\frac{\pi_{\theta}(\tau)}{\pi_{\bar\theta}(\tau)}\log\frac{\pi_{\theta}(\tau)}{\pi_{\bar\theta}(\tau)}\right]\\
+    &= \mathbb{E}_{\tau\sim\pi_{\bar\theta}} \left[\omega(\tau)\frac{Z_{\bar\theta}}{Z_\theta}\log\omega(\tau)\frac{Z_{\bar\theta}}{Z_{\theta}}\right]\\
+    &= \mathbb{E}_{\tau\sim\pi_{\bar\theta}} \left[\omega(\tau)\log\omega(\tau)\right]\frac{Z_{\bar\theta}}{Z_\theta} + \mathbb{E}_{\tau\sim\pi_{\bar\theta}} \left[\omega(\tau)\right]\frac{Z_{\bar\theta}}{Z_\theta}\log\frac{Z_{\bar\theta}}{Z_{\theta}}.\\
+\end{split}
+\end{equation}
+From (\ref{eq:z_theta}) we know that $Z_{\bar\theta}/Z_\theta=1/\mathbb{E}_{\tau\sim\pi_{\bar\theta}}\omega(\tau)$. Using Jensen's inequality we have
+\begin{equation}
+\begin{split}
+    D_{KL}(\pi_{\theta}\vert\vert\pi_{\bar\theta})
+    &= \frac{1}{\mathbb{E}_{\tau\sim\pi_{\bar\theta}}\left[\omega(\tau)\right]}\mathbb{E}_{\tau\sim\pi_{\bar\theta}} \left[\omega(\tau)\log\omega(\tau)\right] - \log \mathbb{E}_{\tau\sim\pi_{\bar\theta}}\left[\omega(\tau)\right]\\
+    &\leq \frac{1}{\mathbb{E}_{\tau\sim\pi_{\bar\theta}}\left[\omega(\tau)\right]}\mathbb{E}_{\tau\sim\pi_{\bar\theta}} \left[\omega(\tau)\log\omega(\tau)\right] - \mathbb{E}_{\tau\sim\pi_{\bar\theta}}\left[\log\omega(\tau)\right].\\
+\end{split}
+\end{equation}
+Letting $\bar{\omega}$ denote $\mathbb{E}_{\tau\sim\pi_{\bar\theta}}[\omega(\tau)]$ gives us
+\begin{equation}
+    D_{KL}(\pi_{\theta}\vert\vert\pi_{\bar\theta}) \leq \frac{\mathbb{E}_{\tau\sim\pi_{\bar\theta}} \left[(\omega(\tau)-\bar\omega)\log\omega(\tau)\right]}{\bar{\omega}}.
+\end{equation}
+
+\subsection{Rationale for (\ref{eq:min_max})}
+\label{a:maxent}
+Consider a constrained MDP $\mathcal{M}^\mathcal{C}$ as defined in Section \ref{sec:crl}. We are interested in recovering the following policy
+\begin{equation}
+    \pi_{\mathcal{M}^\mathcal{C}}(\tau) = \frac{\exp(\beta r(\tau))}{Z_{\mathcal{M}^\mathcal{C}}}\mathds{1}^\mathcal{C}(\tau)
+    \label{eq:maxent_cons}
+\end{equation}
+where $Z_{\mathcal{M}^\mathcal{C}} = \int \exp(\beta r(\tau))\mathds{1}^\mathcal{C}(\tau) d\tau$ is the partition function and $\mathds{1}^\mathcal{C}$ is an indicator function that is $0$ if $\tau\in\mathcal{C}$ and $1$ otherwise.
+
+\textbf{Lemma:} The Boltzmann policy $\pi^B(\tau) = \exp(\beta r(\tau))/Z$ maximizes $\mathcal{L}(\pi) = \mathbb{E}_{\tau\sim\pi}[r(\tau)] + \frac{1}{\beta}\mathcal{H}(\pi)$, where $H(\pi)$ denotes the entropy of $\pi$.
+
+\textbf{Proof:} Note that the KL-divergence, $D_{KL}$, between a policy $\pi$ and $\pi^B$ can be written as
+\begin{equation}
+    \begin{split}
+    \mathcal{D}_{KL}(\pi\vert\vert\pi^B)
+    &= \mathbb{E}_{\tau\sim\pi}[\log\pi(\tau)-\log\pi^B(\tau)]\\
+    &= \mathbb{E}_{\tau\sim\pi}[\log\pi(\tau)-\beta r(\tau)+\log Z]\\
+    &=-\mathbb{E}_{\tau\sim\pi}[\beta r(\tau)]-\mathcal{H}(\pi) + \log Z\\
+    &=-\beta\mathcal{L}(\pi) + \log Z.
+    \end{split}
+\end{equation}
+Since $\log Z$ is constant, minimizing $D_{KL}(\pi\vert\vert\pi^B)$ is equivalent to maximizing $\mathcal{L}(\pi)$. Also, we know that $\mathcal{D}_{KL}(\pi\vert\vert\pi^B)$ is minimized when $\pi = \pi^B$. Therefore, $\pi^B$ maximizes $\mathcal{L}$.
+
+\textbf{Proposition:} The policy in (\ref{eq:maxent_cons}) is a solution of
+\begin{equation}
+	\underset{\lambda \geq 0}{\text{minimize}} \max_\pi \mathbb{E}_{\tau\sim\pi}[r(\tau)] +\frac{1}{\beta}\mathcal{H}(\pi^{\phi}) - \lambda (\mathbb{E}_{\tau\sim\pi^{\phi}}[\bar{\zeta}_\theta(\tau)] - \alpha).
+\end{equation}
+
+\textbf{Proof:} Let us rewrite the inner optimization problem as
+\begin{equation}
+    \max_\pi\; \mathbb{E}_{\tau\sim\pi}[r(\tau)-\lambda (\bar{\zeta}_\theta(\tau)-\alpha)] + \frac{1}{\beta}\mathcal{H}(\pi).
+\end{equation}
+From the Lemma we know that the solution to this is
+\begin{equation}
+    \pi(\tau,\lambda) = \frac{g(\tau,\lambda)}{\int g(\tau',\lambda) d\tau'},
+\end{equation}
+where $g(\tau,\lambda)=\exp(\beta (r(\tau)-\lambda (\bar{\zeta}_\theta(\tau)-\alpha)))$. To find $\pi^*(\tau) = \min_\lambda \pi(\tau,\lambda)$, note that:
+\begin{enumerate}
+    \item When $\bar{\zeta}_\theta(\tau) \leq \alpha$, then $\lambda^* = 0$ minimizes $\pi$. In this case $g(\tau,\lambda^*) = \exp(\beta r(\tau))$.
+    \item When $\bar{\zeta}_\theta(\tau)>\alpha$, then $\lambda^* \rightarrow \infty$ minimizes $\pi$. In this case $g(\tau,\lambda^*)=0$.
+\end{enumerate}
+We can combine both of these cases by writing
+\begin{equation}
+    \pi^*(\tau) = \frac{\exp(r(\tau))}{\int \exp(r(\tau'))\mathds{1}^{\bar{\zeta}_\theta}(\tau')d\tau'}\mathds{1}^{\bar{\zeta}_\theta}(\tau),
+\end{equation}
+where $\mathds{1}^{\bar{\zeta}_\theta}(\tau)$ is $1$ if $\bar{\zeta}_\theta(\tau) \leq \alpha$ and $0$ otherwise. (Note that the denominator is greater than $0$ as long as we have at least one $\tau$ for which $\bar{\zeta}_\theta(\tau) \leq \alpha$, i.e., we have at least one feasible solution.)
+
+\subsection{Experimental settings}
+\label{a:es}
+Our codebase is built on top of the stable-baselines codebase \cite{hill2018stablebaselines}. We used W\&B \citep{wandb2020} to manage our experiments and conduct sweeps on hyperparameters. We used Adam \citep{kingma2015adam} to optimize all of our networks. All important hyperparameters are listed in Table \ref{table:hp}. For the ablation studies we used the same parameters as listed in the table for HalfCheetah. Details on the environments can be found below.
+
+\subsubsection{LapGridWorld}
+Here, agents move on a $11 \times 11$ grid by taking either clockwise or anti-clockwise actions. The agent is awarded a reward $3$ each time it moves onto a bridge with a dollar (see Figure \ref{fig:envs}). The agent's state is the number of the grid it is on.
+
+\subsubsection{HalfCheetah, Ant and Ant-Broken}
+The original reward schemes for HalfCheetah and Ant in OpenAI Gym \citep{brockman2016openai}, reward the agents proportional to the distance they cover in the forward direction. We modify this and instead simply reward the agents according to the amount of distance they cover (irrespective of the direction they move in). For Ant-Broken we simply disable two of the legs of Ant by hard-coding a torque of $0$ on their motors.
+
+\subsubsection{Point}
+For the Point agent, the reward function at each timestep is defined as follows
+\begin{equation}
+    r := \frac{ydx - xdx}{\left(1 + \vert \sqrt{x^2+y^2}-10)\vert\right)}
+\end{equation}
+where $x, y$ are the position coordinates of the agent and $dx$ and $dy$ are the distances that the agent has moved in $x$ and $y$ directions respectively in that timestep.
+
+\begin{table}[th]
+\caption{List of hyperparameters. For neural network architectures we report the number of hidden units in each layer. All hidden layers use the tanh activation function.}
+\label{table:hp}
+\vskip 0.15in
+\begin{center}
+\begin{small}
+\begin{sc}
+\begin{tabular}{lcccccr}
+\toprule
+Parameter & LapGridWorld & HalfCheetah & Ant & Point & AntBroken\\
+\midrule
+Policy, $\pi_\phi$\\
+\;\;\;\;Architecture       & \\
+\;\;\;\;\;\;\;Policy Network & 64, 64 & 64, 64 &64, 64& 64, 64 & 64, 64 \\
+\;\;\;\;\;\;\;Value Network & 64, 64 & 64, 64 &64, 64& 64, 64 & 64, 64 \\
+\;\;\;\;\;\;\;Cost Value Network & 64, 64 & 64, 64 &64, 64& 64, 64 & 64, 64 \\
+\;\;\;\;Batch Size      & 64   & 64   & 128  & 64   & 128\\
+\;\;\;\;PPO Target KL   & $0.01$ & 0.01 & 0.01 & 0.01 & 0.01\\
+\;\;\;\;Learning Rate   & $3 \times 10^{-4}$  & $3 \times 10^{-4}$  & $3 \times 10^{-5}$  & $3 \times 10^{-4}$  & $3 \times 10^{-5}$ \\
+\;\;\;\;Reward-GAE-$\gamma$      & 0.99 & 0.99 & 0.99 & 0.99 & 0.99\\
+\;\;\;\;Reward-GAE-$\lambda$     & 0.95 & 0.95 & 0.90 & 0.95 & 0.90\\
+\;\;\;\;Cost-GAE-$\gamma$        & 0.99 & 0.99 & 0.99 & 0.99 & 0.99\\
+\;\;\;\;Cost-GAE-$\lambda$       & 0.95 & 0.95 & 0.95 & 0.95 & 0.95\\
+\;\;\;\;Entropy Bonus, $1/\beta$ & 0.0  & 0.0  & 0.0  & 0.0  & 0.0\\
+Lagrangian, $\lambda$\\
+\;\;\;\;Initial Value  & 1.0 & 1.0 & 0.1 & 1.0 & 0.1\\
+\;\;\;\;Learning Rate  & 0.1 & 0.1 & 1.0 & 0.1 & 1.0\\
+\;\;\;\;Budget         & 0.0 & 0.0 & 0.0 & 0.0 & 0.0\\
+Constraint Function, $\zeta_\theta$\\
+\;\;\;\;Architecture                    & 20   & 20   & 40,40 & - & -\\
+\;\;\;\;Learning Rate                   & 0.01 & 0.01 & 0.01  & - & -\\
+\;\;\;\;Backward Iterations             & 10   & 10   & 10    & - & -\\
+\;\;\;\;Regularizer Weight              & 0.5  & 0.5  & 0.6   & - & -\\
+\;\;\;\;Max Forward KL, $\epsilon_F$    & 10   & 10   & 10    & - & -\\
+\;\;\;\;Max Backward KL, $\epsilon_B$   & 2.5  & 2.5  & 2.5   & - & -\\
+Miscellaneous\\
+\;\;\;\;Expert Rollouts                 & 1    & 10   & 45    & -   & -\\
+\;\;\;\;Rollout Length                  & 200  & 1000 & 500   & 150 & 500\\
+\bottomrule
+\end{tabular}
+\end{sc}
+\end{small}
+\end{center}
+\vskip -0.1in
+\end{table}

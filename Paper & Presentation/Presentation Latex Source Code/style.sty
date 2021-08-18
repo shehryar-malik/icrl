@@ -1,0 +1,79 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Custom style file.
+% Author: @smalik
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{style}[2014/08/24 Example LaTeX package]
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                   REQUIRED PACKAGES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage[utf8]{inputenc}
+\RequirePackage{hyperref}
+\RequirePackage{amsmath}
+\RequirePackage{amsfonts}
+\RequirePackage{graphicx}
+\RequirePackage{bbm}
+% \RequirePackage{enumitem}
+\RequirePackage{xcolor}
+% \RequirePackage{subcaption}
+\RequirePackage{hyperref}
+\RequirePackage{setspace}
+\RequirePackage{amssymb}   % Bullets  
+\RequirePackage{ragged2e}      % For text justifying/alignment
+
+\RequirePackage{algorithm}
+\RequirePackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{subfigure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                   PAGE LAYOUT
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.5em}
+\setbeamerfont{footnote}{size=\tiny}
+% Make margins thin
+\setbeamersize{text margin left=1.0em}  
+\setbeamersize{text margin right=2.0em} 
+
+\apptocmd{\frame}{}{\justifying}{} % Texts in frame is justified
+
+% This is a hack to make itemize follow justify by redefining right alignment 
+\renewcommand{\raggedright}{\justifying}  
+
+% Use circles for items
+\setbeamertemplate{itemize item}[circle]
+
+
+\newcommand\myheading[1]{%
+  \par\smallskip
+  {\large#1}\par\smallskip}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                   BIBLIOGRAPHY                        %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \RequirePackage{natbib}
+% \bibliographystyle{plain}
+% \def\bibfont{\small}
+%\bibpunct{(}{)}{;}{a}{,}{,}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                   BEAMER                              %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setbeamercolor{title}{fg=black,bg=white}
+%\setbeamercolor{frametitle}{fg=black,bg=white}
+\setbeamercolor{section in head/foot}{fg=black,bg=white}
+\setbeamercolor{author in head/foot}{fg=black,bg=white}
+\setbeamercolor{date in head/foot}{fg=black,bg=white}
+\setbeamercolor{itemize item}{fg=black}
+\setbeamercolor{enumerate item}{fg=black}
+\setbeamercolor{local structure}{fg=black}
+
+\setbeamertemplate{navigation symbols}{}
+
+\RequirePackage{wrapfig}
+\RequirePackage{amssymb}
+\input{math_commands}
+\setbeamertemplate{footline}[frame number]
